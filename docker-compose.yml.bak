@@ -1,0 +1,36 @@
+version: "3"
+
+networks:
+    web:
+        external: true
+    internal:
+        external: false
+   
+services:
+
+  web-server:
+    image: apache:latest
+    restart: unless-stopped
+    volumes:
+     - /docker/app/nginx.conf:/etc/nginx/nginx.conf
+     - /docker/app/host.conf:/etc/nginx/conf.d/host.conf
+     - /docker/app/php.conf:/etc/nginx/php.conf
+     - /home/app:/app
+     - /etc/localtime:/etc/localtime:ro
+    expose:
+     - "80"
+    command: nginx -g 'daemon off;'
+    depends_on:
+     - php-fpm7
+    networks:
+      - internal
+      - web
+
+  php-fpm7:
+    image: some-php7-image
+    restart: unless-stopped
+    volumes:
+     - /home/app:/app
+     - /etc/localtime:/etc/localtime:ro
+    networks:
+      - internal
