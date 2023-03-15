@@ -1,36 +1,38 @@
-version: "3"
-
-networks:
-    web:
-        external: true
-    internal:
-        external: false
-   
 services:
 
-  web-server:
-    image: apache:latest
-    restart: unless-stopped
-    volumes:
-     - /docker/app/nginx.conf:/etc/nginx/nginx.conf
-     - /docker/app/host.conf:/etc/nginx/conf.d/host.conf
-     - /docker/app/php.conf:/etc/nginx/php.conf
-     - /home/app:/app
-     - /etc/localtime:/etc/localtime:ro
-    expose:
-     - "80"
-    command: nginx -g 'daemon off;'
-    depends_on:
-     - php-fpm7
-    networks:
-      - internal
-      - web
+  web1:
+    build:
+      context: ./Web
+      dockerfile: ./Web/Dockerfile
+    container_name: efcc-abc
+    ports:
+      - 20001:80
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+    environment:
+      APACHE_LOG_DIR: /var/log/apache2
+    command: /bin/bash -c "mkdir -p /var/log/apache2 && \
+                            chown www-data:www-data /var/log/apache2 && \
+                            ln -sf /dev/stdout /var/log/apache2/access.log && \
+                            ln -sf /dev/stderr /var/log/apache2/error.log && \
+                            apache2-foreground"
 
-  php-fpm7:
-    image: some-php7-image
-    restart: unless-stopped
-    volumes:
-     - /home/app:/app
-     - /etc/localtime:/etc/localtime:ro
     networks:
+      - web
       - internal
+    volumes:
+      - "/var/www/vhosts/xxxx/html:/var/www/html"
+    restart: always
+
+
+
+
+
+
+networks:
+  web:
+    external: true
+  internal:
+    external: true
