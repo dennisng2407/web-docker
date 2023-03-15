@@ -24,7 +24,7 @@ services:
       - web
       - internal
     volumes:
-      - "/var/www/vhosts/efcc-abc.hk/html:/var/www/html"
+      - "/var/www/vhosts/xxxxxxxx/html:/var/www/html"
     restart: always
 
 
