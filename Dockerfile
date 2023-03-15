@@ -17,6 +17,7 @@ RUN openssl req -x509 -sha256 -days 3560 -nodes -newkey rsa:2048 -subj "/C=CA/ST
 COPY ./default-ssl.conf /etc/apache2/sites-available/
 RUN a2ensite default-ssl
 RUN a2enmod ssl
+RUN a2enmod rewrite
 
 # mysqli pdo pdo_mysql
 RUN apt-get install libxml2-dev -y --force-yes
