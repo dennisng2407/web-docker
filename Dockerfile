@@ -18,6 +18,7 @@ COPY ./default-ssl.conf /etc/apache2/sites-available/
 RUN a2ensite default-ssl
 RUN a2enmod ssl
 RUN a2enmod rewrite
+RUN a2enmod headers
 
 # mysqli pdo pdo_mysql
 RUN apt-get install libxml2-dev -y --force-yes
