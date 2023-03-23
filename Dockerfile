@@ -1,6 +1,6 @@
 
 
-FROM php:5.4-apache
+FROM php:8.2-apache
 
 
 RUN apt-get update
@@ -22,11 +22,13 @@ RUN a2enmod headers
 
 # mysqli pdo pdo_mysql
 RUN apt-get install libxml2-dev -y --force-yes
-RUN apt-get install -y --force-yes libbz2-dev libcurl4-openssl-dev libgd-dev libgmp-dev libldap2-dev libmcrypt-dev libmhash-dev libmysqlclient-dev libodbc1 libodbc1 libpng12-dev libpspell-dev libsnmp-dev libsqlite3-dev libtidy-dev libxml2-dev libxslt1-dev
-RUN apt-get install -y --force-yes mysql-client
-RUN docker-php-ext-install mysqli
-RUN docker-php-ext-install pdo
-RUN docker-php-ext-install pdo_mysql
+RUN apt-get install -y --force-yes libbz2-dev 
+RUN apt-get install -y --force-yes libcurl4-openssl-dev libgd-dev libgmp-dev libldap2-dev libmcrypt-dev 
+RUN apt-get install -y --force-yes libmhash-dev  libodbc1 libodbc1 libpng-dev libpspell-dev 
+
+RUN apt-get install -y --force-yes libsnmp-dev libsqlite3-dev libtidy-dev libxml2-dev libxslt1-dev
+RUN apt-get install -y --force-yes mariadb-client
+RUN docker-php-ext-install mysqli pdo pdo_mysql
 RUN docker-php-ext-enable mysqli pdo pdo_mysql
 
 # XML Dependency
@@ -35,10 +37,10 @@ RUN docker-php-ext-install xml
 RUN docker-php-ext-enable xml
 
 # gd Dependency
- RUN apt-get install libfreetype6-dev libjpeg62-turbo-dev libpng-dev -y --force-yes \
-  && docker-php-ext-install gd
+# RUN apt-get install libfreetype6-dev libjpeg62-turbo-dev libpng-dev -y --force-yes \
+RUN docker-php-ext-install gd
 RUN docker-php-ext-configure gd
-RUN docker-php-ext-configure gd --with-jpeg-dir=/usr/include/
+# RUN docker-php-ext-configure gd --with-jpeg-dir=/usr/include/
 
 #exif
 RUN docker-php-ext-install exif
