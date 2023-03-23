@@ -62,6 +62,11 @@ RUN docker-php-ext-install bcmath
 RUN docker-php-ext-install json
 RUN docker-php-ext-enable mbstring bcmath json
 
+
+# opcache
+RUN docker-php-ext-install opcache
+RUN docker-php-ext-enable opcache
+
 #Zip dependency
 RUN apt-get install libzip-dev -y --force-yes
 RUN docker-php-ext-install zip
